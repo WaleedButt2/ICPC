@@ -3,6 +3,8 @@
         "iostream": "cpp",
         "new": "cpp",
         "algorithm": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "*.tcc": "cpp",
+        "list": "cpp"
     }
 }

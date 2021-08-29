@@ -54,19 +54,20 @@ int current_avalible_print(Printer *printers,int size,int &current_avalible_prin
     for(int i=0;i<size;i++) if(cost<printers[i].Cost_per_time) printers[i].dont_check=true;
     for(int i=0;i<size;i++){
         printers[i].time_till_free-=a;
-        if(printers[i].time_till_free<=0)
+        if(printers[i].time_till_free<0)
             printers[i].Avaliability=true;
-    }
+    } // cout<<"as\n"; 
    // cout<<printers[0].time_till_free<<endl;
+//   if(printers[0].Avaliability==true) cout<<1<<endl;
+  // else cout<<0<<endl;
     for(int i=0;i<size;i++)
        if(printers[i].Avaliability==true&&printers[i].dont_check==false)return i; 
-   // cout<<"as\n"; 
    // cout<<printers[0].time_till_free<<' '<<printers[1].time_till_free<<endl;
     for(int i=0;i<size;i++){
        if(i==size)  return i;
        if(printers[i].time_till_free<printers[i+1].time_till_free&&printers[i].dont_check==false)return i;
        }  
-   cout<<"\nasa\n"<<endl;
+   //cout<<"\nasa\n"<<endl;
     return current_avalible_printer;
 }
 void reset(Printer *printers,int size,int a){
@@ -80,7 +81,7 @@ void reset(Printer *printers,int size,int a){
 }
 int main(){
     int m,n,a,t,c,min_cost=INT_MAX;
-    cin>>n>>m;; //n is no. of printers and m is no. of jobs
+    cin>>n>>m;; 
     Printer *printers= new Printer[n];
     Job *jobs = new Job [m];
     for(int i=0;i<n;i++){  
@@ -94,36 +95,19 @@ int main(){
     for(int i=0;i<m;i++){  
     cin>>jobs[i].a>>jobs[i].t>>jobs[i].c;
     jobs[i].order_no=i;
-    //cout<<jobs[i].a<< ' '<<jobs[i].t << ' '<< jobs[i].c<<endl;
     }
     cout<<endl;
     sort(jobs,&jobs[m],ret);
-    //print(jobs,m);
-   // exit(0);
-  // cout<<jobs[0].t<<endl;
- // cout<<m<<endl;
     for(int s=0;s<m;s++){
         a=jobs[s].a;c=jobs[s].c;t=jobs[s].t;
-       // cout<<a<< ' '<<t << ' '<< c<<endl;
-      //  exit(0);
         if(c<min_cost){
-            //cout<<a<<" 0\n";
             jobs[s].output_cost=0;
-            //cout<<jobs[s].order_no+1<<' '<<a<<endl;
             jobs[s].time=a;
             continue;
         }
-       // cout<<printers[0].time_till_free<<' '<<a<<' '<<printers[0].latest_arrival_times<<endl;
         current_avalible_printer=current_avalible_print(printers,n,current_avalible_printer,a,c);
-      //  cout<<printers[0].time_till_free<<' '<<a<<' '<<printers[0].latest_arrival_times<<endl;
-        //cout<<current_avalible_printer<<' ';
         reset(printers,n,a);
-        //cout<<12<<endl;
-        //cout<<printers[0].time_till_free<<' '<<a<<' '<<printers[0].latest_arrival_times<<endl;
-        //if(a<=printers[current_avalible_printer].time_till_free||printers[current_avalible_printer].Avaliability==true)printers[current_avalible_printer].latest_arrival_times+=a;
-       // else printers[current_avalible_printer].latest_arrival_times=0;
-        cout<<printers[0].time_till_free<<' '<<a<<' '<<current_avalible_printer<<endl;
-        if(printers[current_avalible_printer].Avaliability==true||printers[current_avalible_printer].time_till_free<=a){
+        if(printers[current_avalible_printer].Avaliability==true||printers[current_avalible_printer].time_till_free<a){
             printers[current_avalible_printer].Avaliability=false;
            // cout<<s<<endl;
             printers[current_avalible_printer].time_till_free=t+a;
@@ -132,7 +116,7 @@ int main(){
        // cout<<endl<<printers[0].time_till_free<<' '<<printers[1].time_till_free<<endl;
         jobs[s].time=printers[current_avalible_printer].time_till_free;
         jobs[s].output_cost=printers[current_avalible_printer].Cost_per_time*t;
-        cout<<printers[0].time_till_free<<' '<<a<<endl<<endl;
+       // cout<<printers[0].time_till_free<<' '<<a<<endl<<endl;
         printers[current_avalible_printer].latest_arrival_times=a;
    cout.flush();
     }
